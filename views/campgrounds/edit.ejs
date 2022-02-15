@@ -1,0 +1,77 @@
+    <% layout('layout/boilerplate') -%>  
+        <div class="row">
+    <h1 class="text-center">
+        Add New Campground
+    </h1>
+   <div class="col-6 offset-3">
+
+
+     <form  action="/campgrounds/<%=id%>/edit?__method=PUT" method="post" novalidate class="need-validate">
+        <div class="mb-3">
+            <label  class="form-label" for="title">ENTER THE TITLE</label>
+            <input class="form-control" type="text" name="title" placeholder="Himalayan Ground" required>
+            <div class="valid-feedback">
+      Looks good!
+    </div>
+
+        </div>
+        <br>
+        <div class="mb-3">
+            <label class="form-label" for="location">ENTER THE LOCATION</label>
+            <input class="form-control" type="text" name="location" placeholder="India" required>
+            <div class="valid-feedback">
+      Looks good!
+    </div>
+        </div>
+        <br>
+        <div class="mb-3">
+            <label class="form-label" for="image">ENTER THE IMAGE URL</label>
+            <input class="form-control" type="text" name="image" placeholder="https://image.unsplash.com/example" required>
+        <div class="valid-feedback">
+      Looks good!
+    </div>
+        </div>
+        
+
+
+        <div class="mb-3">
+         <label class="form-label" for="PRICE">ENTER THE PRICE</label>
+            <div class="input-group">
+  <span class="input-group-text">$</span>
+  <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="0.00" name="price" required>
+  <span class="input-group-text">.00</span>
+<div class="valid-feedback">
+      Looks good!
+    </div>
+</div>
+</div>  
+
+
+        <div class="mb-3">
+            <label class="form-label" for="description">ENTER THE DESCRIPTION OF THE CAMP</label>
+            <textarea class="form-control" type="text" name="description" placeholder="Description...." required></textarea>
+        </div>
+        <div class="valid-feedback">
+      Looks good!
+    </div>
+        <br>
+        <div class="mb-3"><button class="btn btn-success">EDIT</button></div>
+
+    </form> 
+    <br>
+    <div class="mb-3"><a href="/campgrounds" ><button>ALL CAMPGROUNDS</button></a>
+</div>
+    
+    </div>
+   </div>
+
+
+
+    </form>
+    
+
+
+    
+
+
+<!--new form-->
