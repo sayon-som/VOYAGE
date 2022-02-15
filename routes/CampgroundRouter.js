@@ -4,8 +4,11 @@ const CatchAsync = require("../utils/CatchAsync");
 const ExpressError = require("../utils/ExpressErrors");
 const Campground = require("../models/CampGround");
 const joi = require("joi");
-
+const isloggedin=require('../middleware');
 const joi_schema = require("../schema");
+
+
+const passport=require('passport');
 const validator = (req, res, next) => {
   //validating the data being passed
 
@@ -37,22 +40,7 @@ route.get("/makecamp", async (req, res) => {
       console.log(err);
     });
 });
-route.get("/makecamp", async (req, res) => {
-  const new_camp = new Campground({
-    title: "mexico",
-    price: "$160",
-    description: "good",
-    location: "florida",
-  });
-  await new_camp
-    .save()
-    .then(() => {
-      console.log("inserted");
-    })
-    .catch((e) => {
-      console.log(err);
-    });
-});
+
 route.get("/campgrounds", async (req, res) => {
   const info = await Campground.find({});
   res.render("campgrounds/index.ejs", { info });
@@ -60,8 +48,9 @@ route.get("/campgrounds", async (req, res) => {
 
 //adding a new campground
 
-route.get("/campgrounds/new", (req, res) => {
-  res.render("campgrounds/new.ejs");
+route.get("/campgrounds/new",
+isloggedin, (req, res) => {
+  res.render("campgrounds/new.ejs") ;
 });
 
 /*handling the post request*/
@@ -85,7 +74,7 @@ validator,
   })
 );
 route.get(
-  "/campgrounds/:id/edit",
+  "/campgrounds/:id/edit",isloggedin,
   CatchAsync(async (req, res) => {
     const data = await Campground.findById(req.params.id);
     const { id } = req.params;
@@ -120,11 +109,11 @@ route.put(
 );
 
 //deleting the campground
-route.delete("/campgrounds/:id/delete", async (req, res) => {
+route.delete("/campgrounds/:id/delete", isloggedin, async (req, res) => {
   const { id } = req.params;
   const del_camp = await Campground.findByIdAndDelete(id);
   //adding the flash
-  req.flash("success","Removed the Campground");  
+  req.flash("success", "Removed the Campground");
   res.redirect("/campgrounds");
 });
 //showing all the campgrounds

@@ -25,6 +25,7 @@ const sessionConfig = {
 const Usermodel=require("./models/User")
 const routes = require("./routes/CampgroundRouter");
 const rroutes = require("./routes/ReviewRoute");
+
 const review_model = require("./models/Review.js");
 //getting the error class
 const ExpressError = require("./utils/ExpressErrors");
@@ -61,7 +62,7 @@ const res = require('express/lib/response');
 const { string } = require('joi');
 const Review = require('./models/Review.js');
 //getting the user route
-const UserRoute=require("./models/User");
+const UserRoute=require("./routes/User.js");
 //for getting the body from the post request
 app.use(express.urlencoded({ extended: true }));
 
@@ -71,10 +72,22 @@ app.set("view enjine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new localstrategy(Usermodel.authenticate()));
+
+//storing and unstoring user
+passport.serializeUser(Usermodel.serializeUser());
+passport.deserializeUser(Usermodel.deserializeUser());
 
 
 //for handling the flash operations
 app.use((req,res,next)=>{
+  //storing the return to url
+  res.locals.returnto = req.originalUrl;
+  //creating the local for hiding and viewing functionalitites depending on the users choice
+  res.locals.currentUser=req.user;
   res.locals.success=req.flash('success');
   res.locals.error=req.flash('error');
   next();
@@ -106,29 +119,12 @@ app.use(methodOverride("__method"));
 //   }
 // };
 
-//for the user route
-app.use("/",UserRoute);
-
-//for the campground router part
-app.use("/",routes);
-
-//for the review router part
-
-app.use("/",rroutes)
 
 //for the home route
 // app.get("/",(req,res)=>{
 //    res.render("home.ejs");
 // });
 
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.use(new localstrategy(Usermodel.authenticate()));
-
-//storing and unstoring user
-passport.serializeUser(Usermodel.serializeUser());
-passport.deserializeUser(Usermodel.deserializeUser());
 
 
 
@@ -142,6 +138,15 @@ app.get("/fakeuser",async(req,res)=>{
  const new_user=await  Usermodel.register(user,"123456");
  res.send(new_user);
 })
+//for the user route
+app.use("/",UserRoute);
+
+//for the campground router part
+app.use("/",routes);
+
+//for the review router part
+
+app.use("/",rroutes)
 
 
 
@@ -261,6 +266,7 @@ app.use((err,req,res,next)=>{
   res.status(status).render('error.ejs',{err});
 })
 //server response
-app.listen(3000,()=>{
-    console.log("listening at port 3000");
+app.listen(8000,()=>{
+    console.log("listening at port 8000");
 })
+  

@@ -6,6 +6,7 @@ const ExpressError = require("../utils/ExpressErrors");
 const Campground = require("../models/CampGround");
 const review_schema = require("../reviewschema.js");
 const joi = require("joi");
+const isloggedin=require("../middleware");
 
 const joi_schema = require("../schema");
 const r_validator = (req, res, next) => {
@@ -22,6 +23,7 @@ const r_validator = (req, res, next) => {
 route.post(
   "/campgrounds/:id/reviews",
   r_validator,
+  isloggedin,
   CatchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id);
 
@@ -35,8 +37,8 @@ route.post(
     campground.reviews.push(review);
     await review.save();
     await campground.save();
-   //adding a splash for a new review
-   req.flash("success","you have successfully submitted your review")
+    //adding a splash for a new review
+    req.flash("success", "you have successfully submitted your review");
     res.redirect(`/campgrounds/${req.params.id}`);
   })
 );
