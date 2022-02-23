@@ -85,13 +85,15 @@ passport.deserializeUser(Usermodel.deserializeUser());
 //for handling the flash operations
 app.use((req,res,next)=>{
   //storing the return to url
-  res.locals.returnto = req.originalUrl;
+  
   //creating the local for hiding and viewing functionalitites depending on the users choice
+  
   res.locals.currentUser=req.user;
   res.locals.success=req.flash('success');
   res.locals.error=req.flash('error');
   next();
 })
+
 
 //serving the public assets
 app.use(express.static(path.join(__dirname,'public')));

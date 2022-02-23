@@ -6,58 +6,27 @@ const ExpressError = require("../utils/ExpressErrors");
 const Campground = require("../models/CampGround");
 const review_schema = require("../reviewschema.js");
 const joi = require("joi");
-const isloggedin=require("../middleware");
-
+const isloggedin=require("../middleware/middleware");
+const r_validator=require("../middleware/validatorreview");
 const joi_schema = require("../schema");
-const r_validator = (req, res, next) => {
-  //validating the data being passed
+const isAuth=require("../middleware/isAuth")
+const isReviewAith=require("../middleware/isReviewAith");
+const {createReview,deletereview}=require("../controller/Review");
+//creating the reviews
 
-  const { error } = review_schema.validate(req.body.review);
-  if (error) {
-    const msg = error.details.map((e) => e.message).join(",");
-    throw new ExpressError(msg, 400);
-  } else {
-    next();
-  }
-};
 route.post(
   "/campgrounds/:id/reviews",
   r_validator,
   isloggedin,
-  CatchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id);
-
-    const { range, message } = req.body;
-
-    const review = new review_model({
-      body: message,
-      rating: range,
-    });
-
-    campground.reviews.push(review);
-    await review.save();
-    await campground.save();
-    //adding a splash for a new review
-    req.flash("success", "you have successfully submitted your review");
-    res.redirect(`/campgrounds/${req.params.id}`);
-  })
+  
+  CatchAsync(createReview)
 );
 
-//deleting the reviews:)
+//deleting the reviews ;)
 
 route.delete(
-  "/campgrounds/:id/reviews/:reviewsId",
-  CatchAsync(async (req, res) => {
-    const { id, reviewsId } = req.params;
-    const see = await Campground.findByIdAndUpdate(id, {
-      $pull: { reviews: reviewsId },
-    });
-    const set = await review_model.findOneAndDelete(reviewsId);
-//adding the flash
-req.flash("success","Review removed");
-
-    res.redirect(`/campgrounds/${id}`);
-  })
+  "/campgrounds/:id/reviews/:reviewsId",isloggedin,isReviewAith,
+  CatchAsync(deletereview)
 );
 
 

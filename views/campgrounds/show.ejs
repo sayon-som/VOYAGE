@@ -1,5 +1,7 @@
 
 <%layout("layout/boilerplate.ejs")-%>
+<!--adding the star functionality-->
+<link rel="stylesheet" href="/CSS/stars.css">
    <div class="row">
            <div class="col-6">
 
@@ -12,28 +14,50 @@
   <ul class="list-group list-group-flush">
     <li class="list-group-item text-muted"><%= data.location %></li>
     <li class="list-group-item">$<%=data.price%>/night</li>
-   
+    <li class="list-group-item"> created by <%=data.author.username%></li>
+  
   <div class="card-body">
-          <a href="/campgrounds/<%=data._id%>/edit" class="card-link"><button class="btn btn-primary">EDIT</button></a>
+ <%if(currentUser && currentUser._id.equals(data.author._id)){%> 
+    <a href="/campgrounds/<%=data._id%>/edit" class="card-link"><button class="btn btn-primary">EDIT</button></a>
    <form  class="d-inline" action="/campgrounds/<%=data._id%>/delete?__method=DELETE" method="post"><button class="btn btn-danger">DELETE</button></form>
-        <a href="/campgrounds" class="card-link"><button class="btn btn-primary">BACK</button></a>
+         
+      <% } %> 
+   <a href="/campgrounds" class="card-link"><button class="btn btn-primary">BACK</button></a>
     
   </div>
+ 
 </div>
 
 
            </div>
            <div class="col-6">
+             <% if(currentUser){ %> 
              <h2>LEAVE A REVIEW</h2>
 <form action="/campgrounds/<%=data._id%>/reviews" method="POST" class="mb-3 need-validate"  novalidate >
   <div class="mb-3">
-    <label for="rating" class="form-label"> Rating</label>
-    <input type="range" min="1" max="10" class="form-range" name="range" required >
+    
+    <!-- <input type="range" min="1" max="5" class="form-range" name="range" required > -->
+    <div class="mb-3">
+    <fieldset class="starability-basic">
+  
+  <input type="radio" id="no-rate" class="input-no-rate" name="range" value="0" checked aria-label="No rating." />
+  <input type="radio" id="first-rate1" name="range" value="1" />
+  <label for="first-rate1" title="Terrible">1 star</label>
+  <input type="radio" id="first-rate2" name="range" value="2" />
+  <label for="first-rate2" title="Not good">2 stars</label>
+  <input type="radio" id="first-rate3" name="range" value="3" />
+  <label for="first-rate3" title="Average">3 stars</label>
+  <input type="radio" id="first-rate4" name="range" value="4" />
+  <label for="first-rate4" title="Very good">4 stars</label>
+  <input type="radio" id="first-rate5" name="range" value="5" />
+  <label for="first-rate5" title="Amazing">5 stars</label>
+</fieldset>
+</div>
     
   </div>
   <div class="mb-3">
     <label class="form-label" for="body">
-Review
+leave a text
     </label>
     <textarea class ="form-control" name="message"  rows="3" col="30" required></textarea>
   <div class="valid-feedback">
@@ -41,7 +65,7 @@ Review
     </div>
   </div>
   <button class="btn btn-success">Submit</button>
-
+<% } %> 
 
   
   
@@ -49,10 +73,16 @@ Review
 <%for(let t of data.reviews){%>
  <div class="card mb-3">
 <div class="card-body">
-  <h5 class="card-title">Rating: <%= t.rating %> </h5>
+ <!-- ' <h5 class="card-title">Rating: <%= t.rating %> </h5>' -->
+<p class="starability-result" data-rating="<%=t.rating%>">
+                    Rated: <%= t.rating %> stars
+                </p>
+  <h6 class="card-subtitle mb-2 text-muted">Created by <%=t.author.username%> </h6>
     <p class="card-text">Review: <%= t.body %></p>
     <form action="/campgrounds/<%= data._id %>/reviews/<%=t._id%>?__method=DELETE" method="POST">
+      <%if(currentUser && t.author.equals(currentUser._id)){%> 
     <button class="btn-sm btn-danger">Delete</button>
+    <% } %> 
     </form>
   
   

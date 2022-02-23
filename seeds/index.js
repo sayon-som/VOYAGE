@@ -36,10 +36,10 @@ const price=Math.floor(Math.random()*1000);
 const new_data = new Campground({
   location: `${cities[rand_city].city} ${cities[rand_city].state}`,
   title: `${rand_array(descriptors)} ${rand_array(places)}`,
-  price:price,
-  image:await seedImg(),
-  description:'llorem ip asd dasdhasada dskjdkads dahdajdpidajf fiusfijfdf'
-  
+  price: price,
+  image: await seedImg(),
+  description: "llorem ip asd dasdhasada dskjdkads dahdajdpidajf fiusfijfdf",
+  author: "620f4b4cb00c6007c75ecc64",
 });
 await new_data.save();
 

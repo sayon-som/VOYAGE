@@ -12,4 +12,5 @@ unique:true
 });
 //using the plugin
 UserSchema.plugin(passportlocalmongoose);
-module.exports=mongoose.model("User",UserSchema);
+const User=mongoose.model("User",UserSchema);
+module.exports=User;
