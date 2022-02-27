@@ -1,3 +1,10 @@
+if(process.env.NODE_ENV!=="production"){
+  require("dotenv").config();
+}
+// console.log(process.env.SAYON);
+
+
+
 const express=require('express')
 const mongoose = require("mongoose");
 mongoose
@@ -63,6 +70,7 @@ const { string } = require('joi');
 const Review = require('./models/Review.js');
 //getting the user route
 const UserRoute=require("./routes/User.js");
+const { id } = require('./schema.js');
 //for getting the body from the post request
 app.use(express.urlencoded({ extended: true }));
 
