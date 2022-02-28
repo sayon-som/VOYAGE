@@ -11,7 +11,7 @@ const passport = require("passport");
 const validator=require("../middleware/validator")
 const {index,newCampground,makeCamp,showpage,editpage,updateCamp,deleteop}=require("../controller/campgrounds.js");
 const multer = require("multer");
-const {storage}=require("../cloudinary/app")
+const {storage}=require("../cloudinary")
 // const upload = multer({ dest: "uploads/" });
 const upload=multer({storage});
 
@@ -33,16 +33,17 @@ route.get("/campgrounds/:id",CatchAsync(showpage));
 
 /*handling the post request*/
 
-// route.post(
-//   "/campgrounds",
-//   isloggedin,
-//   validator,
-//   CatchAsync(makeCamp)
-// );
-route.post("/campgrounds", upload.array('placeimage'), (req, res) => {
+route.post(
+  "/campgrounds",
+  isloggedin,
+  upload.array('placeimage'),
+  validator,
+  CatchAsync(makeCamp)
+);
+// route.post("/campgrounds", upload.array('placeimage'), (req, res) => {
   
   
-});
+// });
 route.get(
   "/campgrounds/:id/edit",
   isloggedin,

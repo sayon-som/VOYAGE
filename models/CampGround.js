@@ -7,7 +7,12 @@ const CampGroundSchema = new Schema({
   title: String,
   location: String,
 
-  image: String,
+  images:[
+    {
+    url:String,
+filename:String
+    }
+  ],
   price: Number,
   description: String,
   author:{

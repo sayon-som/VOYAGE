@@ -7,10 +7,13 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET
 });
 
-const storage=new CloudinaryStorage({
-    cloudinary,
-    folder:"VOYAGE",
-    allowedFormats:['jpeg','png','jpg']
+const storage = new CloudinaryStorage({
+  cloudinary,
+  //uploading int the VOYAGE folder
+  params: {
+    folder: "VOYAGE",
+    allowedFormats: ["jpeg", "png", "jpg"],
+  },
 });
 module.exports={
     cloudinary,

@@ -16,7 +16,15 @@ module.exports.makeCamp = async (req, res) => {
   const new_camp = new Campground(data);
   //  new_camp.author=req.user.
   //generate the flashx
-  new_camp.author = req.user._id;
+   new_camp.author = req.user._id;
+  new_camp.images=req.files.map((data)=>({
+    url:data.path,
+    filename:data.filename
+  })
+
+)
+
+ 
 
   await new_camp.save();
   req.flash("success", "Your New Campground is ready");
@@ -40,6 +48,7 @@ module.exports.showpage = async (req, res) => {
     req.flash("error", "Your campground is not found");
     return res.redirect("/campgrounds");
   }
+ 
   res.render("campgrounds/show.ejs", { data });
 };
 

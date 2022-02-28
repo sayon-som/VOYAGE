@@ -139,15 +139,15 @@ app.use(methodOverride("__method"));
 
 
 //adding new user
-app.get("/fakeuser",async(req,res)=>{
-  const user= new Usermodel({
-    email:"hello@gmial.com",
-    username:"Sayon"
+// app.get("/fakeuser",async(req,res)=>{
+//   const user= new Usermodel({
+//     email:"hello@gmial.com",
+//     username:"Sayon"
     
-  })
- const new_user=await  Usermodel.register(user,"123456");
- res.send(new_user);
-})
+//   })
+//  const new_user=await  Usermodel.register(user,"123456");
+//  res.send(new_user);
+// })
 //for the user route
 app.use("/",UserRoute);
 

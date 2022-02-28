@@ -38,6 +38,16 @@ const new_data = new Campground({
   title: `${rand_array(descriptors)} ${rand_array(places)}`,
   price: price,
   image: await seedImg(),
+  images: [
+    {
+      url: "https://res.cloudinary.com/dwvwzlueg/image/upload/v1646068462/VOYAGE/mpjfd7ujenogyhnlsjov.jpg",
+      filename: "VOYAGE/mpjfd7ujenogyhnlsjov",
+    },
+    {
+      url: "https://res.cloudinary.com/dwvwzlueg/image/upload/v1646068462/VOYAGE/i5c3mcijk3log20xoqf3.jpg",
+      filename: "VOYAGE/i5c3mcijk3log20xoqf3",
+    },
+  ],
   description: "llorem ip asd dasdhasada dskjdkads dahdajdpidajf fiusfijfdf",
   author: "620f4b4cb00c6007c75ecc64",
 });
