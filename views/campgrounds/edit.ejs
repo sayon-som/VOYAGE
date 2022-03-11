@@ -6,7 +6,7 @@
    <div class="col-6 offset-3">
 
 
-     <form  action="/campgrounds/<%=id%>/edit?__method=PUT" method="post" novalidate class="need-validate">
+     <form  action="/campgrounds/<%=data.id%>/edit?__method=PUT" method="post" novalidate class="need-validate" enctype="multipart/form-data">
         <div class="mb-3">
             <label  class="form-label" for="title">ENTER THE TITLE</label>
             <input class="form-control" type="text" name="title" placeholder="Himalayan Ground" required>
@@ -24,13 +24,22 @@
     </div>
         </div>
         <br>
-        <div class="mb-3">
-            <label class="form-label" for="image">ENTER THE IMAGE URL</label>
-            <input class="form-control" type="text" name="image" placeholder="https://image.unsplash.com/example" required>
-        <div class="valid-feedback">
-      Looks good!
-    </div>
+        
+      <div class="mb-3 custom-file">
+  <label for="formFile" class="form-label custom-file-label">ENTER IMAGES</label>
+  <input class="form-control" type="file" id="formFile" name="placeimage" multiple>
+</div>
+        
+<div class="mb-3">
+    <%data.images.forEach((data,i)=>{%> 
+        <img src="<%= data.thumbnail%> " class="img-thumbnail" alt="">
+        <div class="form-check-inline">
+            <input type="checkbox"  id="image-<%=i%>" name="deleteimages[]" value="<%=data.filename%>">
         </div>
+        <label for="image-<%=i%>">Delete</label>
+        <% }); %> 
+</div>
+
         
 
 

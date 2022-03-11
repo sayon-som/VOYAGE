@@ -1,5 +1,8 @@
+const { default: bsCustomFileInput } = require("bs-custom-file-input");
+
 (function () {
   "use strict";
+  bsCustomFileInput.init()
 
   var forms = document.querySelectorAll(".need-validate");
 

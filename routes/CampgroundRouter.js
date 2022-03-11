@@ -50,7 +50,7 @@ route.get(
   isAuth,
   CatchAsync(editpage)
 );
-route.put("/campgrounds/:id/edit", validator, CatchAsync(updateCamp));
+route.put("/campgrounds/:id/edit",upload.array('placeimage'),validator,CatchAsync(updateCamp));
 
 //deleting the campground
 route.delete(

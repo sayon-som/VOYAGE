@@ -3,15 +3,21 @@ const { id } = require('../schema');
 const Schema=mongoose.Schema;
 const review=require("./Review");
 const user=require("./User");
+//defining a separate image schema for the images
+const imageSchema = new Schema({
+  url: String,
+  filename: String,
+});
+imageSchema.virtual('thumbnail').get(function(){
+  return this.url.replace('/upload','/upload/w_200');
+
+})
 const CampGroundSchema = new Schema({
   title: String,
   location: String,
 
   images:[
-    {
-    url:String,
-filename:String
-    }
+   imageSchema
   ],
   price: Number,
   description: String,

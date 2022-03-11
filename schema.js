@@ -7,6 +7,7 @@ const joi_schema = joi
   
     description: joi.string().required(),
     location: joi.string().required(),
+    deleteimages:joi.array()
   });
 
   

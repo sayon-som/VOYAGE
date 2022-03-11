@@ -1,4 +1,5 @@
 const Campground=require("../models/CampGround");
+const {cloudinary}=require("../cloudinary/index");
 module.exports.index= async(req, res) => {
   const info = await Campground.find({});
   res.render("campgrounds/index.ejs", { info });
@@ -60,7 +61,7 @@ module.exports.editpage = async (req, res) => {
     return res.redirect("/campgrounds");
   }
 
-  res.render("campgrounds/edit.ejs", { id });
+  res.render("campgrounds/edit.ejs", {data});
 };
 
 //update campgrounds
@@ -68,8 +69,9 @@ module.exports.updateCamp = async (req, res) => {
   const { id } = req.params;
   
   const get = req.body;
+  
   //logic for restrictin the use from editing
-  const data = await Campground.findById(id );
+
 
   const up_data = await Campground.findByIdAndUpdate(
     { _id: id },
@@ -82,6 +84,23 @@ module.exports.updateCamp = async (req, res) => {
       },
     }
   );
+  const images=req.files.map((data)=>({url:data.path,filename:data.filename}));
+  
+  up_data.images.push(...images);
+
+  await up_data.save();
+//deleting the selected images foer the edited form
+if(req.body.deleteimages){
+  //deleting from the cloudinary storage
+  for(let i in req.body.deleteimages){
+    await cloudinary.uploader.destroy(i);
+  }
+
+await up_data.updateOne({$pull:{images:{filename:{$in:req.body.deleteimages}}}});
+}
+
+
+
   req.flash("success", "Hey your campground is successfully updated");
   res.redirect("/campgrounds");
 };
