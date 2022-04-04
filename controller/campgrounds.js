@@ -1,6 +1,11 @@
-const Campground=require("../models/CampGround");
-const {cloudinary}=require("../cloudinary/index");
-module.exports.index= async(req, res) => {
+const Campground = require("../models/CampGround");
+const { cloudinary } = require("../cloudinary/index");
+//getting the map-box functionality
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const map_token = process.env.MAP_BOX_TOKEN;
+const geocoder = mbxGeocoding({ accessToken: map_token });
+
+module.exports.index = async (req, res) => {
   const info = await Campground.find({});
   res.render("campgrounds/index.ejs", { info });
 };
@@ -10,26 +15,34 @@ module.exports.newCampground = (req, res) => {
 };
 
 module.exports.makeCamp = async (req, res) => {
-  //defining the joi schema
+  //forward geocoding
+  const geodata = await geocoder
+    .forwardGeocode({
+      query: req.body.location,
+      limit: 1,
+    })
+    .send();
+  // res.send(geodata.body.features[0].geometry);
 
-  const data = req.body;
+    //defining the joi schema
 
-  const new_camp = new Campground(data);
-  //  new_camp.author=req.user.
-  //generate the flashx
-   new_camp.author = req.user._id;
-  new_camp.images=req.files.map((data)=>({
-    url:data.path,
-    filename:data.filename
-  })
+    const data = req.body;
 
-)
+    const new_camp = new Campground(data);
+    new_camp.geometry = geodata.body.features[0].geometry;
+    //  new_camp.author=req.user.
+    //generate the flashx
+     new_camp.author = req.user._id;
+    new_camp.images=req.files.map((data)=>({
+      url:data.path,
+      filename:data.filename
+    })
 
- 
+  )
 
-  await new_camp.save();
-  req.flash("success", "Your New Campground is ready");
-  res.redirect("/campgrounds");
+    await new_camp.save();
+    req.flash("success", "Your New Campground is ready");
+    res.redirect("/campgrounds");
 };
 
 module.exports.showpage = async (req, res) => {
@@ -49,7 +62,7 @@ module.exports.showpage = async (req, res) => {
     req.flash("error", "Your campground is not found");
     return res.redirect("/campgrounds");
   }
- 
+
   res.render("campgrounds/show.ejs", { data });
 };
 
@@ -61,17 +74,16 @@ module.exports.editpage = async (req, res) => {
     return res.redirect("/campgrounds");
   }
 
-  res.render("campgrounds/edit.ejs", {data});
+  res.render("campgrounds/edit.ejs", { data });
 };
 
 //update campgrounds
 module.exports.updateCamp = async (req, res) => {
   const { id } = req.params;
-  
-  const get = req.body;
-  
-  //logic for restrictin the use from editing
 
+  const get = req.body;
+
+  //logic for restrictin the use from editing
 
   const up_data = await Campground.findByIdAndUpdate(
     { _id: id },
@@ -84,34 +96,37 @@ module.exports.updateCamp = async (req, res) => {
       },
     }
   );
-  const images=req.files.map((data)=>({url:data.path,filename:data.filename}));
-  
+  const images = req.files.map((data) => ({
+    url: data.path,
+    filename: data.filename,
+  }));
+
   up_data.images.push(...images);
 
   await up_data.save();
-//deleting the selected images foer the edited form
-if(req.body.deleteimages){
-  //deleting from the cloudinary storage
-  for(let i in req.body.deleteimages){
-    await cloudinary.uploader.destroy(i);
+  //deleting the selected images foer the edited form
+  if (req.body.deleteimages) {
+    //deleting from the cloudinary storage
+    for (let i in req.body.deleteimages) {
+      await cloudinary.uploader.destroy(i);
+    }
+
+    await up_data.updateOne({
+      $pull: { images: { filename: { $in: req.body.deleteimages } } },
+    });
   }
-
-await up_data.updateOne({$pull:{images:{filename:{$in:req.body.deleteimages}}}});
-}
-
-
 
   req.flash("success", "Hey your campground is successfully updated");
   res.redirect("/campgrounds");
 };
 //deleting the campgrounds
-module.exports.deleteop=async (req, res) => {
-    const data = Campground.findById(req.params.id);
-    //restricting user for deleting the place without permission
+module.exports.deleteop = async (req, res) => {
+  const data = Campground.findById(req.params.id);
+  //restricting user for deleting the place without permission
 
-    const del_camp = await Campground.findByIdAndDelete(req.params.id);
+  const del_camp = await Campground.findByIdAndDelete(req.params.id);
 
-    //adding the flash
-    req.flash("success", "Removed the Campground");
-    res.redirect("/campgrounds");
-  };
+  //adding the flash
+  req.flash("success", "Removed the Campground");
+  res.redirect("/campgrounds");
+};

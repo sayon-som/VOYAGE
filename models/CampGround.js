@@ -14,6 +14,18 @@ imageSchema.virtual('thumbnail').get(function(){
 })
 const CampGroundSchema = new Schema({
   title: String,
+  //for the geojson format of storing the location
+   geometry: {
+    type: {
+      type: String, // Don't do `{ location: { type: String } }`
+      enum: ['Point'], // 'location.type' must be 'Point'
+      required: true
+    },
+    coordinates: {
+      type: [Number],
+      required: true
+    }
+  },
   location: String,
 
   images:[

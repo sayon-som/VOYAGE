@@ -2,8 +2,13 @@
 <%layout("layout/boilerplate.ejs")-%>
 <!--adding the star functionality-->
 <link rel="stylesheet" href="/CSS/stars.css">
+<!-- for the map token -->
+
    <div class="row">
+
            <div class="col-6">
+             <!-- for displaying the map -->
+             <div id='map' style='width: 400px; height: 300px;'></div>
              <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
 <% data.images.forEach((img,i)=>{ %> 
@@ -116,7 +121,19 @@ leave a text
    </div>
       
         
-       
+       <script>
+mapboxgl.accessToken = '<%=process.env.MAP_BOX_TOKEN%>';
+const map = new mapboxgl.Map({
+container: 'map', // container ID
+style: 'mapbox://styles/mapbox/streets-v11', // style URL
+center: [-74.5, 40], // starting position [lng, lat]
+zoom: 4 // starting zoom
+});
+</script>
+<script src="/JS/map.js"></script>
+<script>
+  
+</script>
        
         
          
