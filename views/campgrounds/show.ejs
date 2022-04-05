@@ -8,8 +8,9 @@
 
            <div class="col-6">
              <!-- for displaying the map -->
-             <div id='map' style='width: 400px; height: 300px;'></div>
+            
              <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                
   <div class="carousel-inner">
 <% data.images.forEach((img,i)=>{ %> 
     <div class="carousel-item <%= i===0 ? 'active':'' %> ">
@@ -57,6 +58,7 @@
 
            </div>
            <div class="col-6">
+             <div id='map' style='width: 400px; height: 300px;'></div>
              <% if(currentUser){ %> 
              <h2>LEAVE A REVIEW</h2>
 <form action="/campgrounds/<%=data._id%>/reviews" method="POST" class="mb-3 need-validate"  novalidate >
@@ -121,14 +123,19 @@ leave a text
    </div>
       
         
-       <script>
+       <!-- <script>
 mapboxgl.accessToken = '<%=process.env.MAP_BOX_TOKEN%>';
 const map = new mapboxgl.Map({
 container: 'map', // container ID
 style: 'mapbox://styles/mapbox/streets-v11', // style URL
 center: [-74.5, 40], // starting position [lng, lat]
 zoom: 4 // starting zoom
-});
+}); -->
+</script>
+<script> 
+
+const map_token='<%-process.env.MAP_BOX_TOKEN%>';
+const new_data='<%-JSON.stringify(data)%>';
 </script>
 <script src="/JS/map.js"></script>
 <script>
