@@ -59,7 +59,7 @@
 
            </div>
            <div class="col-6">
-             <div id='map' style='width: 400px; height: 300px;'></div>
+             <div id='map'></div>
              <% if(currentUser){ %> 
              <h2>LEAVE A REVIEW</h2>
 <form action="/campgrounds/<%=data._id%>/reviews" method="POST" class="mb-3 need-validate"  novalidate >
@@ -137,6 +137,7 @@ zoom: 4 // starting zoom
 
 const map_token='<%-process.env.MAP_BOX_TOKEN%>';
 const new_data=<%-JSON.stringify(data)%>;
+
 
 </script>
 <script src="/JS/map.js"></script>

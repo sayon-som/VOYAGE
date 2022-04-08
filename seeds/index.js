@@ -44,12 +44,12 @@ const seedDB = async () => {
       image: await seedImg(),
       images: [
         {
-          url: "https://res.cloudinary.com/dwvwzlueg/image/upload/v1646068462/VOYAGE/mpjfd7ujenogyhnlsjov.jpg",
-          filename: "VOYAGE/mpjfd7ujenogyhnlsjov",
+          url: "https://res.cloudinary.com/dwvwzlueg/image/upload/v1649430850/VOYAGE/b2_qjzm1f.avif",
+          filename: "VOYAGE/xlnuv0q6ytvtrj4x73r7",
         },
         {
-          url: "https://res.cloudinary.com/dwvwzlueg/image/upload/v1646068462/VOYAGE/i5c3mcijk3log20xoqf3.jpg",
-          filename: "VOYAGE/i5c3mcijk3log20xoqf3",
+          url: "https://res.cloudinary.com/dwvwzlueg/image/upload/v1649430850/VOYAGE/b2_qjzm1f.avif",
+          filename: "VOYAGE/xlnuv0q6ytvtrj4x73r7",
         },
       ],
       description:

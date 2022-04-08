@@ -1,11 +1,11 @@
     <% layout('layout/boilerplate') -%>  
-    <div id="map" style="width:100%;height: 500px"></div>
+    <div id="cluster-map" ></div>
     <h1>ALL OF THE CAMPGROUNDS ARE:</h1>
     <a href="/campgrounds/new"><button>ADD A NEW CAMPGROUND</button></a>
     
         <% for(let i of info){%>
             
-            <div class="card" mb-3>
+            <div class="card mb-3">
                 <div class="row">
                     <div class="col-md-4">
                         <%if(i.images.length)  {%> 

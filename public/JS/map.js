@@ -10,8 +10,9 @@ const map = new mapboxgl.Map({
 });
 // Set marker options.
 // Set marker options.
+map.addControl(new mapboxgl.NavigationControl());
 const marker = new mapboxgl.Marker({
-  color: "#FFFFFF",
+  color: "#FF0000",
   draggable: true,
 })
   .setLngLat(loc.geometry.coordinates)

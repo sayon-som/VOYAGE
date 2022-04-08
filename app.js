@@ -2,9 +2,10 @@ if(process.env.NODE_ENV!=="production"){
   require("dotenv").config();
 }
 // console.log(process.env.SAYON);
+const helmet=require('helmet');
 
-
-
+//for mongoose injection
+const express_mongoose_sanitize=require('express-mongo-sanitize');
 const express=require('express')
 const mongoose = require("mongoose");
 mongoose
@@ -24,6 +25,7 @@ const sessionConfig = {
   resave: false,
   saveUninitialized: true,
   cookie: {
+    name:"lightyagami",
     httpOnly:true,
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 1000 * 60 * 60 * 24 * 7,
@@ -39,6 +41,59 @@ const ExpressError = require("./utils/ExpressErrors");
 app.use(session(sessionConfig));
 app.use(flash());
 //requiring the routers
+
+//using the hemlet middleware
+// app.use(helmet()); //including this breaks the CSP
+ 
+const scriptSrcUrls = [
+  "https://stackpath.bootstrapcdn.com/",
+  "https://api.tiles.mapbox.com/",
+  "https://api.mapbox.com/",
+  "https://kit.fontawesome.com/",
+  "https://cdnjs.cloudflare.com/",
+  "https://cdn.jsdelivr.net/",
+  "https://res.cloudinary.com/dwvwzlueg/",
+];
+const styleSrcUrls = [
+  "https://kit-free.fontawesome.com/",
+  "https://stackpath.bootstrapcdn.com/",
+  "https://api.mapbox.com/",
+  "https://api.tiles.mapbox.com/",
+  "https://fonts.googleapis.com/",
+  "https://use.fontawesome.com/",
+  "https://cdn.jsdelivr.net/",
+  "https://res.cloudinary.com/dwvwzlueg/",
+];
+const connectSrcUrls = [
+  "https://*.tiles.mapbox.com",
+  "https://api.mapbox.com",
+  "https://events.mapbox.com",
+  "https://res.cloudinary.com/dwvwzlueg/",
+];
+const fontSrcUrls = ["https://res.cloudinary.com/dwvwzlueg/"];
+ 
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: [],
+      connectSrc: ["'self'", ...connectSrcUrls],
+      scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+      styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+      workerSrc: ["'self'", "blob:"],
+      objectSrc: [],
+      imgSrc: [
+        "'self'",
+        "blob:",
+        "data:",
+        "https://res.cloudinary.com/dwvwzlueg/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT!
+        "https://images.unsplash.com/",
+      ],
+      fontSrc: ["'self'", ...fontSrcUrls],
+      mediaSrc: ["https://res.cloudinary.com/dwvwzlueg/"],
+      childSrc: ["blob:"],
+    },
+  })
+);
 
 //getting the review model
 
@@ -89,6 +144,9 @@ passport.use(new localstrategy(Usermodel.authenticate()));
 passport.serializeUser(Usermodel.serializeUser());
 passport.deserializeUser(Usermodel.deserializeUser());
 
+//using the mongo sanitize ckage
+app.use(express_mongoose_sanitize());
+
 
 //for handling the flash operations
 app.use((req,res,next)=>{
@@ -131,9 +189,9 @@ app.use(methodOverride("__method"));
 
 
 //for the home route
-// app.get("/",(req,res)=>{
-//    res.render("home.ejs");
-// });
+app.get("/",(req,res)=>{
+   res.render("home.ejs");
+});
 
 
 
