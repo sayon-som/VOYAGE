@@ -37,7 +37,9 @@
             <script> 
 
 const map_token='<%-process.env.MAP_BOX_TOKEN%>';
-const new_data={features:<%-JSON.stringify(info)%>};
+const new_data={
+    features:<%-JSON.stringify(info)%>
+};
 
 </script>
             <!-- including the script of the map cluster -->

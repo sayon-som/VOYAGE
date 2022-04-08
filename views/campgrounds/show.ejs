@@ -42,6 +42,7 @@
     <li class="list-group-item text-muted"><%= data.location %></li>
     <li class="list-group-item">$<%=data.price%>/night</li>
     <li class="list-group-item"> created by <%=data.author.username%></li>
+    
   
   <div class="card-body">
  <%if(currentUser && currentUser._id.equals(data.author._id)){%> 
@@ -135,7 +136,8 @@ zoom: 4 // starting zoom
 <script> 
 
 const map_token='<%-process.env.MAP_BOX_TOKEN%>';
-const new_data='<%-JSON.stringify(data)%>';
+const new_data=<%-JSON.stringify(data)%>;
+
 </script>
 <script src="/JS/map.js"></script>
 <script>
