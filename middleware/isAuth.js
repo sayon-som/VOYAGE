@@ -9,7 +9,7 @@ module.exports.isAuth=async(req,res,next)=>{
 
  if(!data.author.equals(req.user._id)) {
    req.flash("error", "You do not have the authorization to this area");
-   return res.redirect("/campgrounds");
+   return res.redirect("/places");
  }
 next();
 }

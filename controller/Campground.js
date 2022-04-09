@@ -7,11 +7,11 @@ const geocoder = mbxGeocoding({ accessToken: map_token });
 
 module.exports.index = async (req, res) => {
   const info = await Campground.find({});
-  res.render("campgrounds/index.ejs", { info });
+  res.render("places/index.ejs", { info });
 };
 
 module.exports.newCampground = (req, res) => {
-  res.render("campgrounds/new.ejs");
+  res.render("places/new.ejs");
 };
 
 module.exports.makeCamp = async (req, res) => {
@@ -24,25 +24,23 @@ module.exports.makeCamp = async (req, res) => {
     .send();
   // res.send(geodata.body.features[0].geometry);
 
-    //defining the joi schema
+  //defining the joi schema
 
-    const data = req.body;
+  const data = req.body;
 
-    const new_camp = new Campground(data);
-    new_camp.geometry = geodata.body.features[0].geometry;
-    //  new_camp.author=req.user.
-    //generate the flashx
-     new_camp.author = req.user._id;
-    new_camp.images=req.files.map((data)=>({
-      url:data.path,
-      filename:data.filename
-    })
+  const new_camp = new Campground(data);
+  new_camp.geometry = geodata.body.features[0].geometry;
+  //  new_camp.author=req.user.
+  //generate the flashx
+  new_camp.author = req.user._id;
+  new_camp.images = req.files.map((data) => ({
+    url: data.path,
+    filename: data.filename,
+  }));
 
-  )
-
-    await new_camp.save();
-    req.flash("success", "Your New Campground is ready");
-    res.redirect("/campgrounds");
+  await new_camp.save();
+  req.flash("success", "Your New Places is ready");
+  res.redirect("/places");
 };
 
 module.exports.showpage = async (req, res) => {
@@ -59,25 +57,25 @@ module.exports.showpage = async (req, res) => {
   //adding the flash if the campground is not found
 
   if (!data) {
-    req.flash("error", "Your campground is not found");
-    return res.redirect("/campgrounds");
+    req.flash("error", "Your place is not found");
+    return res.redirect("/places");
   }
 
-  res.render("campgrounds/show.ejs", { data });
+  res.render("places/show.ejs", { data });
 };
 
 module.exports.editpage = async (req, res) => {
   const data = await Campground.findById(req.params.id);
   const { id } = req.params;
   if (!data) {
-    req.flash("error", "Your campground is not found");
-    return res.redirect("/campgrounds");
+    req.flash("error", "Your place is not found");
+    return res.redirect("/places");
   }
 
-  res.render("campgrounds/edit.ejs", { data });
+  res.render("places/edit.ejs", { data });
 };
 
-//update campgrounds
+//update places
 module.exports.updateCamp = async (req, res) => {
   const { id } = req.params;
 
@@ -116,10 +114,10 @@ module.exports.updateCamp = async (req, res) => {
     });
   }
 
-  req.flash("success", "Hey your campground is successfully updated");
-  res.redirect("/campgrounds");
+  req.flash("success", "Hey your place is successfully updated");
+  res.redirect("/places");
 };
-//deleting the campgrounds
+//deleting the places
 module.exports.deleteop = async (req, res) => {
   const data = Campground.findById(req.params.id);
   //restricting user for deleting the place without permission
@@ -127,6 +125,6 @@ module.exports.deleteop = async (req, res) => {
   const del_camp = await Campground.findByIdAndDelete(req.params.id);
 
   //adding the flash
-  req.flash("success", "Removed the Campground");
-  res.redirect("/campgrounds");
+  req.flash("success", "Removed the place");
+  res.redirect("/places");
 };

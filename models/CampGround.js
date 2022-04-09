@@ -58,7 +58,7 @@ CampGroundSchema.post("findOneAndDelete", async function (data) {
 
 //creating the virtual property for the map to render
 CampGroundSchema.virtual("properties.popuptext").get(function () {
-  return `<a href="/campgrounds/${this._id}">${this.title}</a>
+  return `<a href="/places/${this._id}">${this.title}</a>
   <p>${this.description.substring(0, 10)}...</p>`;
 });
 module.exports = mongoose.model("Campground", CampGroundSchema);

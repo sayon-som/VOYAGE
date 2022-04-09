@@ -15,7 +15,7 @@ const {createReview,deletereview}=require("../controller/Review");
 //creating the reviews
 
 route.post(
-  "/campgrounds/:id/reviews",
+  "/places/:id/reviews",
   r_validator,
   isloggedin,
   
@@ -25,7 +25,7 @@ route.post(
 //deleting the reviews ;)
 
 route.delete(
-  "/campgrounds/:id/reviews/:reviewsId",isloggedin,isReviewAith,
+  "/places/:id/reviews/:reviewsId",isloggedin,isReviewAith,
   CatchAsync(deletereview)
 );
 

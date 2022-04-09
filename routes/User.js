@@ -4,8 +4,7 @@ const User = require("../models/User");
 const CatchAsync = require("../utils/CatchAsync");
 const passport = require("passport");
 //creating a local middleware
-const app=express();
-
+const app = express();
 
 Router.get("/register", (req, res) => {
   res.render("../views/User/register.ejs");
@@ -13,7 +12,7 @@ Router.get("/register", (req, res) => {
 Router.post(
   "/register",
 
-  CatchAsync(async (req, res,next) => {
+  CatchAsync(async (req, res, next) => {
     //implementing the new try catch situation
     try {
       const { email, username, password } = req.body;
@@ -22,16 +21,14 @@ Router.post(
         username: username,
       });
       const registered_user = await User.register(new_user, password);
-      req.login(registered_user,err=>{
-          if(!err){
-req.flash("success", "welcome to voyage");
-res.redirect("/campgrounds");
-          }
-          else{
-next(err);
-          }
-      })
-      
+      req.login(registered_user, (err) => {
+        if (!err) {
+          req.flash("success", "welcome to voyage");
+          res.redirect("/places");
+        } else {
+          next(err);
+        }
+      });
     } catch (err) {
       req.flash("error", err.message);
       res.redirect("/register");
@@ -46,7 +43,7 @@ Router.get("/login", (req, res) => {
 });
 Router.post(
   "/login",
- 
+
   passport.authenticate("local", {
     failureRedirect: "/login",
     failureFlash: true,
@@ -54,18 +51,18 @@ Router.post(
   (req, res) => {
     //authenticated properly
     //got the id of the logged in user
-    res.locals.user=req.user;
-    
+    res.locals.user = req.user;
+
     req.flash("success", "Welcome back to Voyage");
-    const returnt="/campgrounds";
-   
+    const returnt = "/places";
+
     res.redirect(returnt);
   }
 );
 Router.get("/logout", (req, res) => {
   req.logOut();
   req.flash("sucess", "You are successfully logged out");
-  res.redirect("/campgrounds");
+  res.redirect("/places");
 });
 
 module.exports = Router;

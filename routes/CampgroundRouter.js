@@ -25,23 +25,23 @@ const upload = multer({ storage });
 
 //for the home route
 route.get("/", (req, res) => {
-  res.redirect("/campgrounds");
+  res.redirect("/places");
 });
 //for the index route
-route.get("/campgrounds", CatchAsync(index));
+route.get("/places", CatchAsync(index));
 
 //adding a new campground
 
-route.get("/campgrounds/new", isloggedin, CatchAsync(newCampground));
+route.get("/places/new", isloggedin, CatchAsync(newCampground));
 
 //showing the campgrounds
 
-route.get("/campgrounds/:id", CatchAsync(showpage));
+route.get("/places/:id", CatchAsync(showpage));
 
 /*handling the post request*/
 
 route.post(
-  "/campgrounds",
+  "/places",
   isloggedin,
   upload.array("placeimage"),
   validator,
@@ -50,9 +50,9 @@ route.post(
 // route.post("/campgrounds", upload.array('placeimage'), (req, res) => {
 
 // });
-route.get("/campgrounds/:id/edit", isloggedin, isAuth, CatchAsync(editpage));
+route.get("/places/:id/edit", isloggedin, isAuth, CatchAsync(editpage));
 route.put(
-  "/campgrounds/:id/edit",
+  "/places/:id/edit",
   upload.array("placeimage"),
   validator,
   CatchAsync(updateCamp)
@@ -60,7 +60,7 @@ route.put(
 
 //deleting the campground
 route.delete(
-  "/campgrounds/:id/delete",
+  "/places/:id/delete",
   isloggedin,
   isAuth,
   CatchAsync(deleteop)

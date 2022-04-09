@@ -46,11 +46,11 @@
   
   <div class="card-body">
  <%if(currentUser && currentUser._id.equals(data.author._id)){%> 
-    <a href="/campgrounds/<%=data._id%>/edit" class="card-link"><button class="btn btn-primary">EDIT</button></a>
-   <form  class="d-inline" action="/campgrounds/<%=data._id%>/delete?__method=DELETE" method="post"><button class="btn btn-danger">DELETE</button></form>
+    <a href="/places/<%=data._id%>/edit" class="card-link"><button class="btn btn-primary">EDIT</button></a>
+   <form  class="d-inline" action="/places/<%=data._id%>/delete?__method=DELETE" method="post"><button class="btn btn-danger">DELETE</button></form>
          
       <% } %> 
-   <a href="/campgrounds" class="card-link"><button class="btn btn-primary">BACK</button></a>
+   <a href="/places" class="card-link"><button class="btn btn-primary">BACK</button></a>
     
   </div>
  
@@ -62,7 +62,7 @@
              <div id='map'></div>
              <% if(currentUser){ %> 
              <h2>LEAVE A REVIEW OF THE PLACE</h2>
-<form action="/campgrounds/<%=data._id%>/reviews" method="POST" class="mb-3 need-validate"  novalidate >
+<form action="/places/<%=data._id%>/reviews" method="POST" class="mb-3 need-validate"  novalidate >
   <div class="mb-3">
     
     <!-- <input type="range" min="1" max="5" class="form-range" name="range" required > -->
@@ -108,7 +108,7 @@ leave a text
                 </p>
   <h6 class="card-subtitle mb-2 text-muted">Created by <%=t.author.username%> </h6>
     <p class="card-text">Review: <%= t.body %></p>
-    <form action="/campgrounds/<%= data._id %>/reviews/<%=t._id%>?__method=DELETE" method="POST">
+    <form action="/places/<%= data._id %>/reviews/<%=t._id%>?__method=DELETE" method="POST">
       <%if(currentUser && t.author.equals(currentUser._id)){%> 
     <button class="btn-sm btn-danger">Delete</button>
     <% } %> 
