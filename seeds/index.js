@@ -6,12 +6,12 @@ const Campground = require("../models/CampGround");
 //connecting the database
 const cities = require("./cities");
 const { places, descriptors } = require("./seedhelpers");
-mongoose
-  .connect("mongodb://localhost:27017/yelp-camp")
-  .then((data) => console.log("database connected successfully"))
-  .catch((e) => {
-    Console.log("error");
-  });
+// const db_url = process.env.MONGO_URI || "mongodb://localhost:27017/yelp-camp";
+mongoose.connect("mongodb://localhost:27017/yelp-camp", {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+});
 //
 async function seedImg() {
   try {
