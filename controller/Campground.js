@@ -39,7 +39,7 @@ module.exports.makeCamp = async (req, res) => {
   }));
 
   await new_camp.save();
-  req.flash("success", "Your New Places is ready");
+  req.flash("success", "Your new place is ready");
   res.redirect("/places");
 };
 
@@ -125,6 +125,6 @@ module.exports.deleteop = async (req, res) => {
   const del_camp = await Campground.findByIdAndDelete(req.params.id);
 
   //adding the flash
-  req.flash("success", "Removed the place");
+  req.flash("success", "Removed the place successfully");
   res.redirect("/places");
 };

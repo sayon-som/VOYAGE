@@ -20,7 +20,7 @@
           <h3 class="float-md-left mb-0">VOYAGE</h3>
           <nav class="nav nav-masthead justify-content-center float-md-right">
             <a class="nav-link active" aria-current="page" href="#">Home</a>
-            <a class="nav-link" href="/campgrounds">Places</a>
+            <a class="nav-link" href="/places">Places</a>
             <% if(!currentUser) { %>
             <a class="nav-link" href="/login">Login</a>
             <a class="nav-link" href="/register">Register</a>
@@ -35,20 +35,20 @@
         <p class="lead">
           Welcome to VOYAGE! <br />
           Explore various destinations<br />
-          Do share your own favourite destination and feel free to review other places
+          Do share your own favourite destination and feel free to review other
+          places
         </p>
         <a
-          href="/campgrounds"
+          href="/places"
           class="btn btn-lg btn-secondary font-weight-bold border-white bg-white"
           >View Other Places</a
         >
       </main>
 
       <footer class="mt-auto text-white-50">
-          <p>made with &#9829; by Sayon</p>
-        <% const d = new Date();
-let year = d.getFullYear(); %> 
-        <p>&copy;<%= year%> </p>
+        <p>made with &#9829; by Sayon</p>
+        <% const d = new Date(); let year = d.getFullYear(); %>
+        <p>&copy;<%= year%></p>
       </footer>
     </div>
 
