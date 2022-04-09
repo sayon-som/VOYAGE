@@ -1,15 +1,19 @@
 if(process.env.NODE_ENV!=="production"){
   require("dotenv").config();
 }
+
 // console.log(process.env.SAYON);
 const helmet=require('helmet');
-
+//connection to the mongo uri
+const db_uri = process.env.MONGO_URI;
 //for mongoose injection
 const express_mongoose_sanitize=require('express-mongo-sanitize');
 const express=require('express')
 const mongoose = require("mongoose");
+//"mongodb://localhost:27017/yelp-camp")
+const db_url = process.env.MONGO_URI || "mongodb://localhost:27017/yelp-camp";
 mongoose
-  .connect("mongodb://localhost:27017/yelp-camp")
+  .connect(db_url)
   .then((data) => console.log("database connected successfully"))
   .catch((e) => {
     Console.log("error");
@@ -18,10 +22,26 @@ const path=require("path")
 const app=express();
 //requiring the sessions
 const session=require('express-session');
+
+//storing session in the mongoatlas
+
+const MongoStore = require("connect-mongo")(session);
+
+
 //requiring flash
 const flash=require('connect-flash');
+const sec=process.env.SECRET || "hello this is secret";
+const store = new MongoStore({
+  url: db_url,
+  secret: sec,
+  touchAfter: 24 * 60 * 60,
+});
+store.on('error',(e)=>{
+  console.log(e);
+})
 const sessionConfig = {
-  secret: "hello this is secret",
+  store,
+  secret: sec,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -34,6 +54,10 @@ const sessionConfig = {
 const Usermodel=require("./models/User")
 const routes = require("./routes/CampgroundRouter");
 const rroutes = require("./routes/ReviewRoute");
+
+
+
+
 
 const review_model = require("./models/Review.js");
 //getting the error class

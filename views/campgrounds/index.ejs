@@ -1,7 +1,7 @@
     <% layout('layout/boilerplate') -%>  
     <div id="cluster-map" ></div>
-    <h1>ALL OF THE CAMPGROUNDS ARE:</h1>
-    <a href="/campgrounds/new"><button>ADD A NEW CAMPGROUND</button></a>
+    <h1>ALL OF THE DESTINATIONS ARE:</h1>
+    <a href="/campgrounds/new"><button>ADD A NEW DESTINATON</button></a>
     
         <% for(let i of info){%>
             
@@ -22,7 +22,7 @@
         <small class="text-muted">
             <%=i.location%> 
         </small>
-        <p class="card-text text-muted ">$<%=i.price%>/night</p>
+        <p class="card-text text-muted ">$<%=i.price%>/day</p>
     </p>
     <a href="/campgrounds/<%=i.id%>" class="btn btn-primary">View <%=i.title%></a>
                     </div>

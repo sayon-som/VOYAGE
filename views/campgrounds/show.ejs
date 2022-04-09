@@ -40,7 +40,7 @@
   </div>
   <ul class="list-group list-group-flush">
     <li class="list-group-item text-muted"><%= data.location %></li>
-    <li class="list-group-item">$<%=data.price%>/night</li>
+    <li class="list-group-item">$<%=data.price%>/day</li>
     <li class="list-group-item"> created by <%=data.author.username%></li>
     
   
@@ -61,7 +61,7 @@
            <div class="col-6">
              <div id='map'></div>
              <% if(currentUser){ %> 
-             <h2>LEAVE A REVIEW</h2>
+             <h2>LEAVE A REVIEW OF THE PLACE</h2>
 <form action="/campgrounds/<%=data._id%>/reviews" method="POST" class="mb-3 need-validate"  novalidate >
   <div class="mb-3">
     
