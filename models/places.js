@@ -12,7 +12,7 @@ const imageSchema = new Schema({
 imageSchema.virtual("thumbnail").get(function () {
   return this.url.replace("/upload", "/upload/w_200");
 });
-const CampGroundSchema = new Schema(
+const placesSchema = new Schema(
   {
     title: String,
     //for the geojson format of storing the location
@@ -46,7 +46,7 @@ const CampGroundSchema = new Schema(
   opts
 );
 //mongoose middleware
-CampGroundSchema.post("findOneAndDelete", async function (data) {
+places.post("findOneAndDelete", async function (data) {
   if (data) {
     await review.deleteMany({
       _id: {
@@ -57,8 +57,8 @@ CampGroundSchema.post("findOneAndDelete", async function (data) {
 });
 
 //creating the virtual property for the map to render
-CampGroundSchema.virtual("properties.popuptext").get(function () {
+places.virtual("properties.popuptext").get(function () {
   return `<a href="/places/${this._id}">${this.title}</a>
   <p>${this.description.substring(0, 10)}...</p>`;
 });
-module.exports = mongoose.model("Campground", CampGroundSchema);
+module.exports = mongoose.model("Campground", places);
