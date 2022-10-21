@@ -61,4 +61,4 @@ places.virtual("properties.popuptext").get(function () {
   return `<a href="/places/${this._id}">${this.title}</a>
   <p>${this.description.substring(0, 10)}...</p>`;
 });
-module.exports = mongoose.model("Campground", places);
+module.exports = mongoose.model("places", places);
