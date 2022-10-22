@@ -1,4 +1,4 @@
-const Campground = require("../models/CampGround");
+const places = require("../models/CampGround");
 const { cloudinary } = require("../cloudinary/index");
 //getting the map-box functionality
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
@@ -44,7 +44,7 @@ module.exports.makeCamp = async (req, res) => {
 };
 
 module.exports.showpage = async (req, res) => {
-  const data = await Campground.findById(req.params.id)
+  const data = await placess.findById(req.params.id)
     .populate({
       path: "reviews",
       populate: {
